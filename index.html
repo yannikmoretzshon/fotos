@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acervo · Galeria Privada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070a;--card:#111116;--gold:#d8b46a;--gold2:#f3dca1;--tx:#f1ece2;--mut:#8d887c;--line:rgba(216,180,106,.18);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{background:radial-gradient(1200px 600px at 80% -10%,rgba(216,180,106,.10),transparent 60%),radial-gradient(900px 500px at -10% 20%,rgba(120,90,200,.08),transparent 60%),var(--bg);color:var(--tx);font:300 15px/1.5 Inter,system-ui,sans-serif;min-height:100vh}
+header{padding:56px 6vw 28px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between}
+.eyebrow{letter-spacing:.38em;font-size:11px;color:var(--gold);text-transform:uppercase}
+h1{font:italic 400 clamp(44px,8vw,92px)/1 "Cormorant Garamond",Georgia,serif;background:linear-gradient(100deg,#fff 0%,var(--gold2) 45%,var(--gold) 70%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px}
+.sub{color:var(--mut);margin-top:10px;max-width:46ch}
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--tx);padding:13px 22px;border-radius:999px;font:400 13px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;transition:.35s;backdrop-filter:blur(8px)}
+.btn:hover{border-color:var(--gold);color:var(--gold2);transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,var(--gold2),var(--gold) 60%,#b88b3d);color:#1a1405;border:0;font-weight:500;box-shadow:0 10px 40px -10px rgba(216,180,106,.6)}
+.btn.gold:hover{color:#000;filter:brightness(1.08)}
+.bar{padding:0 6vw 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:13px}
+.tabs{display:flex;gap:6px}
+.tab{cursor:pointer;padding:8px 16px;border-radius:999px;border:1px solid transparent;color:var(--mut);transition:.3s;background:none;font:inherit}
+.tab.on{border-color:var(--line);color:var(--gold2);background:rgba(216,180,106,.07)}
+.meter{width:150px;height:3px;background:#1d1d24;border-radius:3px;overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .8s}
+main{padding:0 6vw 120px;columns:4 260px;column-gap:18px}
+.ph{break-inside:avoid;margin-bottom:18px;position:relative;border-radius:18px;overflow:hidden;background:var(--card);cursor:zoom-in;border:1px solid rgba(255,255,255,.04);opacity:0;transform:translateY(18px) scale(.98);animation:in .8s cubic-bezier(.2,.8,.2,1) forwards;transition:transform .5s,box-shadow .5s,border-color .5s}
+@keyframes in{to{opacity:1;transform:none}}
+.ph:hover{transform:translateY(-4px);border-color:var(--line);box-shadow:0 30px 60px -25px rgba(0,0,0,.9),0 0 40px -15px rgba(216,180,106,.5)}
+.ph img,.ph video{display:block;width:100%;height:auto;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.ph:hover img{transform:scale(1.05)}
+.ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.65));opacity:0;transition:.4s;pointer-events:none}
+.ph:hover::after{opacity:1}
+.heart{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid var(--line);color:#fff;cursor:pointer;font-size:16px;transition:.3s}
+.heart.on{color:var(--gold2);background:rgba(216,180,106,.25)}
+.empty{grid-column:1/-1;text-align:center;padding:90px 20px;color:var(--mut);column-span:all}
+.empty b{display:block;font:italic 400 38px "Cormorant Garamond",serif;color:var(--tx);margin-bottom:8px}
+.drop{position:fixed;inset:0;z-index:50;background:rgba(7,7,10,.85);backdrop-filter:blur(14px);display:none;place-items:center;font:italic 400 48px "Cormorant Garamond",serif;color:var(--gold2);border:2px dashed var(--gold);margin:16px;border-radius:28px}
+.drop.on{display:grid}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;background:rgba(20,20,26,.92);border:1px solid var(--line);padding:14px 22px;border-radius:999px;transition:.5s;z-index:80;backdrop-filter:blur(12px);font-size:13px;min-width:200px;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.lb{position:fixed;inset:0;z-index:60;background:rgba(4,4,6,.96);display:none;flex-direction:column;backdrop-filter:blur(20px)}
+.lb.on{display:flex;animation:fade .4s}
+@keyframes fade{from{opacity:0}}
+.lbtop{display:flex;justify-content:space-between;align-items:center;padding:calc(16px + env(safe-area-inset-top,0px)) 20px 10px;gap:10px;flex-wrap:wrap}
+.lbname{color:var(--mut);font-size:13px;max-width:50vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lbtop .btn{padding:9px 16px;font-size:11px}
+.stage{flex:1;display:grid;place-items:center;min-height:0;padding:0 56px;position:relative}
+.stage img,.stage video{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 40px 120px rgba(0,0,0,.8)}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--gold2);cursor:pointer;font-size:20px}
+.nav.l{left:8px}.nav.r{right:8px}
+.lbinfo{text-align:center;color:var(--mut);font-size:12px;padding:12px 0 calc(16px + env(safe-area-inset-bottom,0px))}
+.note{margin:40px 6vw;padding:18px 22px;border:1px solid var(--line);border-radius:16px;color:var(--mut);column-span:all}
+@media(max-width:600px){main{columns:2 150px;column-gap:10px}.ph{margin-bottom:10px;border-radius:12px}.stage{padding:0 8px}.nav{display:none}header{padding-top:40px}}
+.login{position:fixed;inset:0;z-index:90;background:var(--bg);display:grid;place-items:center;padding:20px}
+.login form{width:min(380px,100%);display:flex;flex-direction:column;gap:14px;text-align:center}
+.login h1{font-size:64px}
+.login input{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--tx);padding:14px 18px;border-radius:14px;font:400 15px Inter,sans-serif;outline:none}
+.login input:focus{border-color:var(--gold)}
+.err{color:#e58a8a;font-size:13px;min-height:18px}
+.hide{display:none!important}
+
+</style>
+</head>
+<body>
+<div class="login" id="login"><form id="lf"><div class="eyebrow">Coleção Privada</div><h1>Acervo</h1>
+<input id="em" type="email" placeholder="E-mail" autocomplete="username" required>
+<input id="pw" type="password" placeholder="Senha" autocomplete="current-password" required>
+<button class="btn gold" type="submit">Entrar</button><div class="err" id="err"></div></form></div>
+<header>
+  <div>
+    <div class="eyebrow">Coleção Privada</div>
+    <h1>Acervo</h1>
+    <p class="sub">Suas memórias em qualidade original, guardadas na nuvem e sincronizadas em todos os seus dispositivos.</p>
+  </div>
+  <div class="actions">
+    <button class="btn" id="out">Sair</button>
+    <button class="btn gold" id="add">＋ Adicionar fotos</button>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+  </div>
+</header>
+<div class="bar">
+  <div class="tabs"><button class="tab on" data-f="all">Todas <span id="cAll"></span></button><button class="tab" data-f="fav">★ Favoritas <span id="cFav"></span></button></div>
+  <div><span id="usage">—</span><div class="meter"><i id="mi"></i></div></div>
+</div>
+<main id="grid"></main>
+
+<div class="drop" id="drop">Solte para guardar</div>
+<div class="toast" id="toast"></div>
+
+<div class="lb" id="lb">
+  <div class="lbtop">
+    <div class="lbname" id="lbname"></div>
+    <div class="actions">
+      <button class="btn" id="lfav">★ Favoritar</button>
+      <button class="btn" id="ldl">⤓ Original</button>
+      <button class="btn" id="ldel">Excluir</button>
+      <button class="btn" id="lx">✕</button>
+    </div>
+  </div>
+  <div class="stage" id="stage"><button class="nav l" id="nl">‹</button><button class="nav r" id="nr">›</button></div>
+  <div class="lbinfo" id="lbinfo"></div>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,doc,setDoc,updateDoc,deleteDoc,getDocs,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ====== COLE AQUI A CONFIG DO SEU PROJETO FIREBASE ====== */
+const firebaseConfig={
+  apiKey:"AIzaSyBSgDl2R7rQ7MUBNA1oUwqzt6TOXlGuKjw",
+  authDomain:"fotos-23e5e.firebaseapp.com",
+  projectId:"fotos-23e5e",
+  appId:"1:170184571966:web:7d314214ee76bf1dd2e56f"
+};
+/* ======================================================== */
+/* Versão 100% gratuita: usa só Authentication + Firestore (sem Storage).
+   O arquivo original é guardado em pedaços (base64) no Firestore, sem nenhuma compressão. */
+
+const app=initializeApp(firebaseConfig),auth=getAuth(app),fs=getFirestore(app);
+const $=s=>document.querySelector(s);
+const CH=700000,MAXMB=30,CAP=1073741824;
+let uid=null,photos=[],filter='all',cur=-1,loaded=false,unsub=null,tok=0;
+const full=new Map();
+const fmt=b=>b>1e9?(b/1e9).toFixed(2)+' GB':b>1e6?(b/1e6).toFixed(1)+' MB':Math.round(b/1e3)+' KB';
+function toast(m,keep){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);if(!keep)toast.t=setTimeout(()=>t.classList.remove('on'),2800)}
+const list=()=>photos.filter(p=>filter==='all'||p.fav);
+const col=()=>collection(fs,'users',uid,'photos');
+const chunks=id=>collection(fs,'users',uid,'photos',id,'chunks');
+
+function render(){
+  const used=photos.reduce((a,p)=>a+(p.size||0)*1.34,0);
+  $('#cAll').textContent=photos.length||'';$('#cFav').textContent=photos.filter(p=>p.fav).length||'';
+  $('#usage').textContent=photos.length?'≈ '+fmt(used)+' de 1 GB · '+photos.length+' fotos':'—';
+  $('#mi').style.width=Math.min(100,used/CAP*100)+'%';
+  const g=$('#grid'),L=list();g.innerHTML='';
+  if(!L.length){g.innerHTML='<div class="empty"><b>'+(loaded?(filter==='fav'?'Nenhuma favorita ainda':'Seu acervo está vazio'):'Carregando…')+'</b>'+(loaded&&filter==='all'?'Toque em “Adicionar fotos” ou arraste arquivos para cá.':'')+'</div>';return}
+  L.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='ph';d.style.animationDelay=Math.min(i,14)*45+'ms';
+    const m=document.createElement('img');m.src=p.thumb;m.alt=p.name||'';
+    const h=document.createElement('div');h.className='heart'+(p.fav?' on':'');h.textContent='★';
+    h.onclick=e=>{e.stopPropagation();toggleFav(p)};
+    d.onclick=()=>openLb(i);d.append(m,h);g.append(d);
+  });
+}
+async function toggleFav(p){try{await updateDoc(doc(col(),p.id),{fav:!p.fav})}catch(e){toast('Não foi possível atualizar')}}
+
+const b64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f)});
+async function mkThumb(f){const bm=await createImageBitmap(f);const k=Math.min(1,520/Math.max(bm.width,bm.height));
+  const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);
+  c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.8)}
+
+async function upload(files){
+  files=[...files].filter(f=>f.type.startsWith('image/'));
+  if(!files.length){toast('Nenhuma imagem compatível');return}
+  let ok=0;
+  for(let i=0;i<files.length;i++){
+    const f=files[i],id=crypto.randomUUID();
+    if(f.size>MAXMB*1e6){toast(f.name+' passa de '+MAXMB+' MB');await new Promise(r=>setTimeout(r,2200));continue}
+    try{
+      toast(`Preparando ${i+1}/${files.length}…`,true);
+      const [data,thumb]=await Promise.all([b64(f),mkThumb(f)]);
+      const n=Math.ceil(data.length/CH);
+      for(let k=0;k<n;k+=4){
+        await Promise.all([...Array(Math.min(4,n-k))].map((_,j)=>{const x=k+j;
+          return setDoc(doc(chunks(id),String(x).padStart(4,'0')),{i:x,d:data.slice(x*CH,(x+1)*CH)})}));
+        toast(`Enviando ${i+1}/${files.length} · ${Math.round(Math.min(n,k+4)/n*100)}%`,true);
+      }
+      await setDoc(doc(col(),id),{thumb,name:f.name,size:f.size,type:f.type,n,fav:false,createdAt:Date.now()+i});
+      ok++;
+    }catch(e){toast('Falhou: '+f.name+' (formato não suportado ou cota)');await new Promise(r=>setTimeout(r,2400))}
+  }
+  if(ok)toast(ok+' foto(s) guardada(s) na nuvem ✓');
+}
+$('#add').onclick=()=>$('#file').click();
+$('#file').onchange=e=>{upload(e.target.files);e.target.value=''};
+let dc=0;
+addEventListener('dragenter',e=>{e.preventDefault();dc++;$('#drop').classList.add('on')});
+addEventListener('dragleave',e=>{dc--;if(dc<=0){dc=0;$('#drop').classList.remove('on')}});
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();dc=0;$('#drop').classList.remove('on');if(uid)upload(e.dataTransfer.files)});
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');filter=t.dataset.f;render()});
+
+async function loadFull(p){
+  if(full.has(p.id))return full.get(p.id);
+  const snap=await getDocs(chunks(p.id));
+  const b=snap.docs.map(d=>d.data()).sort((a,b)=>a.i-b.i).map(x=>x.d).join('');
+  const blob=await (await fetch(`data:${p.type};base64,${b}`)).blob();
+  const r={blob,url:URL.createObjectURL(blob)};
+  full.set(p.id,r);
+  if(full.size>6){const k=full.keys().next().value;URL.revokeObjectURL(full.get(k).url);full.delete(k)}
+  return r;
+}
+function openLb(i){cur=i;showLb();$('#lb').classList.add('on');document.body.style.overflow='hidden'}
+function closeLb(){$('#lb').classList.remove('on');document.body.style.overflow='';cur=-1}
+async function showLb(){
+  const L=list(),p=L[cur];if(!p){closeLb();return}
+  const my=++tok,s=$('#stage');s.querySelectorAll(':scope>img').forEach(n=>n.remove());
+  const m=document.createElement('img');m.src=full.has(p.id)?full.get(p.id).url:p.thumb;s.prepend(m);
+  $('#lbname').textContent=p.name||'';
+  const meta=' · '+fmt(p.size||0)+' · '+new Date(p.createdAt).toLocaleDateString('pt-BR');
+  $('#lbinfo').textContent=(cur+1)+' / '+L.length+meta+(full.has(p.id)?' · original':' · carregando original…');
+  $('#lfav').textContent=p.fav?'★ Favorita':'☆ Favoritar';
+  if(!full.has(p.id)){try{const r=await loadFull(p);if(my===tok){m.src=r.url;$('#lbinfo').textContent=(cur+1)+' / '+L.length+meta+' · original'}}catch(e){if(my===tok)$('#lbinfo').textContent='Não foi possível carregar o original'}}
+}
+const step=d=>{const n=list().length;if(!n)return;cur=(cur+d+n)%n;showLb()};
+$('#lx').onclick=closeLb;$('#nl').onclick=()=>step(-1);$('#nr').onclick=()=>step(1);
+$('#lfav').onclick=()=>{const p=list()[cur];if(p)toggleFav(p)};
+$('#ldl').onclick=async()=>{const p=list()[cur];if(!p)return;try{const r=await loadFull(p);const a=document.createElement('a');a.href=r.url;a.download=p.name||'foto';a.click()}catch(e){toast('Falha ao baixar')}};
+$('#ldel').onclick=async()=>{const p=list()[cur];if(!p||!confirm('Excluir permanentemente esta foto?'))return;
+  try{toast('Excluindo…',true);const sn=await getDocs(chunks(p.id));await Promise.all(sn.docs.map(d=>deleteDoc(d.ref)));await deleteDoc(doc(col(),p.id));full.delete(p.id);toast('Excluída')}catch(e){toast('Não foi possível excluir')}};
+addEventListener('keydown',e=>{if(cur<0)return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1)});
+let sx=0;$('#stage').addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+$('#stage').addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>60)step(d>0?-1:1)});
+
+$('#lf').onsubmit=async e=>{e.preventDefault();$('#err').textContent='';
+  try{await signInWithEmailAndPassword(auth,$('#em').value,$('#pw').value)}catch(x){$('#err').textContent='E-mail ou senha inválidos'}};
+$('#out').onclick=()=>signOut(auth);
+onAuthStateChanged(auth,u=>{
+  if(unsub){unsub();unsub=null}
+  if(!u){uid=null;photos=[];loaded=false;$('#login').classList.remove('hide');render();return}
+  uid=u.uid;$('#login').classList.add('hide');render();
+  unsub=onSnapshot(col(),snap=>{
+    photos=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    loaded=true;render();if(cur>=0)showLb();
+  },()=>{loaded=true;toast('Sem permissão — confira as regras do Firestore');render()});
+});
+</script>
+
+</body>
+</html>
